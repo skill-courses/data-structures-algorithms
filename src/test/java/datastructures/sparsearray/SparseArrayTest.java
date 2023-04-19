@@ -66,4 +66,17 @@ class SparseArrayTest {
 
         assertArrayEquals(expect, result);
     }
+
+    @Test
+    void should_covert_to_two_dimensional_arr() {
+        int[][] array = {
+                {1, 1, 2},
+                {3, 1, 3},
+                {4, 4, 1}
+        };
+        SparseArray sparseArray = new SparseArray(array);
+
+        final int[][] result = sparseArray.covertTo2dimensionalArr();
+        assertArrayEquals(array, result);
+    }
 }
