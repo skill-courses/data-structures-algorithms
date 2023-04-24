@@ -8,7 +8,7 @@ class QueueTest {
 
     @Test
     void should_create_empty_queue() {
-        Queue<Integer> queue = new Queue<>(3);
+        Queue<Integer> queue = new Queue(3);
         assertTrue(queue.isEmpty());
     }
 
@@ -120,7 +120,7 @@ class QueueTest {
     void should_throw_exception_when_remove_elements_in_empty_queue() {
         Queue queue = new Queue(3);
 
-        assertThrows(IllegalStateException.class, () -> queue.removeElement());
+        assertThrows(IllegalStateException.class, queue::removeElement);
     }
 
 }

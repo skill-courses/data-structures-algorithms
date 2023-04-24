@@ -1,11 +1,11 @@
 package datastructures.queue;
 
 public class Queue<T> {
-    private T[] arr;
-    private int front = 0; // 队头
-    private int rear = 0; // 队尾
+    private final T[] arr;
+    private int front; // 队头
+    private int rear; // 队尾
     private final int capacity; // 队列容量
-    private int elementsSize = 0;
+    private int elementsSize;
 
     public Queue(int capacity) {
         this.capacity = capacity;
