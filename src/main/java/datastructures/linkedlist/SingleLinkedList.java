@@ -1,5 +1,6 @@
 package datastructures.linkedlist;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,10 +32,20 @@ public class SingleLinkedList {
         ArrayList<Node> nodes = new ArrayList<>();
         Optional<Node> temp = this.head;
         while (temp.isPresent()) {
-            nodes.add(temp.get());
+            nodes.add(temp.get().copy());
             temp = temp.get().getNext();
         }
         return nodes;
+    }
+
+    private ArrayDeque<Node> toStack() {
+        ArrayDeque<Node> stack = new ArrayDeque<>();
+        Optional<Node> temp = this.head;
+        while (temp.isPresent()) {
+            stack.push(temp.get().copy());
+            temp = temp.get().getNext();
+        }
+        return stack;
     }
 
     public void addByNoOrder(Node node) {
@@ -100,5 +111,25 @@ public class SingleLinkedList {
             temp = temp.get().getNext();
         }
         return Optional.empty();
+    }
+
+    public Optional<Node> findByIndexFromTail(int index) {
+        if (index > this.size) {
+            return Optional.empty();
+        }
+
+        final Node node = this.toList().get(size - index);
+        return Optional.of(node);
+    }
+
+    public SingleLinkedList reverse() {
+        SingleLinkedList reversedSingleLinkedList = new SingleLinkedList();
+        this.toStack().forEach(reversedSingleLinkedList::add);
+        return reversedSingleLinkedList;
+    }
+
+    public SingleLinkedList mergeByOrderNo(SingleLinkedList singleLinkedList) {
+        singleLinkedList.toList().forEach(this::addByNoOrder);
+        return this;
     }
 }

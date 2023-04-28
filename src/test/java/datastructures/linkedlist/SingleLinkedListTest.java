@@ -158,4 +158,67 @@ class SingleLinkedListTest {
         assertEquals(0, singleLinkedList.size());
     }
 
+    @Test
+    void should_find_node_from_tail() {
+        Node node = new Node(1, "宋江");
+        Node node2 = new Node(2, "卢俊义");
+        Node node3 = new Node(3, "吴用");
+        Node node4 = new Node(4, "林冲");
+        Node node5 = new Node(5, "武松");
+
+        SingleLinkedList singleLinkedList = new SingleLinkedList();
+        singleLinkedList.addByNoOrder(node);
+        singleLinkedList.addByNoOrder(node4);
+        singleLinkedList.addByNoOrder(node3);
+        singleLinkedList.addByNoOrder(node5);
+        singleLinkedList.addByNoOrder(node2);
+
+        assertEquals(5, singleLinkedList.size());
+        Optional<Node> nodeOptional = singleLinkedList.findByIndexFromTail(2);
+        assertTrue(nodeOptional.isPresent());
+        assertEquals(node4.getNo(), nodeOptional.get().getNo());
+
+        Optional<Node> nodeOptional1 = singleLinkedList.findByIndexFromTail(10);
+        assertFalse(nodeOptional1.isPresent());
+    }
+
+    @Test
+    void should_reverse_linked_list() {
+        Node node = new Node(1, "宋江");
+        Node node2 = new Node(2, "卢俊义");
+        Node node3 = new Node(3, "吴用");
+
+        SingleLinkedList singleLinkedList = new SingleLinkedList();
+        singleLinkedList.add(node);
+        singleLinkedList.add(node2);
+        singleLinkedList.add(node3);
+
+        assertEquals(3, singleLinkedList.size());
+        SingleLinkedList reversedLinkedList = singleLinkedList.reverse();
+        final List<Node> expected = Arrays.asList(node3, node2, node);
+        assertEquals(expected, reversedLinkedList.toList());
+    }
+
+    @Test
+    void should_merge_one_single_linked_list_to_another() {
+        Node node1 = new Node(1, "宋江");
+        Node node2 = new Node(2, "卢俊义");
+        Node node3 = new Node(3, "吴用");
+        Node node4 = new Node(4, "鲁智深");
+        Node node5 = new Node(5, "林冲");
+
+        SingleLinkedList singleLinkedList = new SingleLinkedList();
+        singleLinkedList.addByNoOrder(node1);
+        singleLinkedList.addByNoOrder(node5);
+        singleLinkedList.addByNoOrder(node3);
+
+        SingleLinkedList singleLinkedList2 = new SingleLinkedList();
+        singleLinkedList2.addByNoOrder(node4);
+        singleLinkedList2.addByNoOrder(node2);
+
+        SingleLinkedList result = singleLinkedList.mergeByOrderNo(singleLinkedList2);
+        assertEquals(5, result.size());
+        final List<Node> expected = Arrays.asList(node1, node2, node3, node4, node5);
+        assertEquals(expected, result.toList());
+    }
 }

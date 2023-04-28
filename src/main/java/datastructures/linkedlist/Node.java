@@ -1,5 +1,6 @@
 package datastructures.linkedlist;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class Node {
@@ -30,5 +31,26 @@ public class Node {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Node copy() {
+        return new Node(this.getNo(), this.getName());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Node node = (Node) o;
+        return no == node.no && name.equals(node.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(no, name);
     }
 }
