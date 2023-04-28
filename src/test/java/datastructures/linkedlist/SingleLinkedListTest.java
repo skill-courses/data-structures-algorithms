@@ -24,7 +24,7 @@ class SingleLinkedListTest {
         singleLinkedList.add(node);
 
         assertEquals(1, singleLinkedList.size());
-        assertEquals(Arrays.asList(node), singleLinkedList.toList());
+        assertEquals(List.of(node), singleLinkedList.toList());
     }
 
     @Test
@@ -152,7 +152,7 @@ class SingleLinkedListTest {
         final Optional<Node> byNo1 = singleLinkedList.findByNo(node3.getNo());
         assertFalse(byNo1.isPresent());
         assertEquals(1, singleLinkedList.size());
-        assertEquals(Arrays.asList(node2), singleLinkedList.toList());
+        assertEquals(List.of(node2), singleLinkedList.toList());
 
         singleLinkedList.delete(node2.getNo());
         assertEquals(0, singleLinkedList.size());

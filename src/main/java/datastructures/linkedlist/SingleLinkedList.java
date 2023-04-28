@@ -41,11 +41,11 @@ public class SingleLinkedList {
         final Optional<Node> nodeOptional = Optional.ofNullable(node);
         final Predicate<Node> findMoreThanNode =
                 temp -> temp.getNext().isPresent() && temp.getNext().get().getNo() > node.getNo();
-        this.findByPredicate(findMoreThanNode).ifPresentOrElse(tempNode -> {
+        this.findByPredicate(findMoreThanNode).ifPresentOrElse((Node tempNode) -> {
                     node.setNext(tempNode.getNext());
                     tempNode.setNext(nodeOptional);
                 },
-                () -> this.tail.ifPresentOrElse(tailNode -> {
+                () -> this.tail.ifPresentOrElse((Node tailNode) -> {
                             tailNode.setNext(nodeOptional);
                             this.tail = nodeOptional;
                         },
@@ -65,18 +65,18 @@ public class SingleLinkedList {
     }
 
     public void delete(int no) {
-        this.head.ifPresent(headNode -> {
+        this.head.ifPresent((Node headNode) -> {
             if (headNode.getNo() == no) {
                 this.head = headNode.getNext();
                 size--;
             }
         });
 
-        this.findPreNodeByNo(no).ifPresent(node -> {
+        this.findPreNodeByNo(no).ifPresent((Node node) -> {
             node.getNext().ifPresentOrElse(temp -> node.setNext(temp.getNext()),
                     () -> {
                         node.setNext(Optional.empty());
-                        this.tail = Optional.ofNullable(node);
+                        this.tail = Optional.of(node);
                     });
             size--;
         });

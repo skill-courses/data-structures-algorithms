@@ -3,7 +3,7 @@ package datastructures.linkedlist;
 import java.util.Optional;
 
 public class Node {
-    private int no;
+    private final int no;
     private String name;
     private Optional<Node> next = Optional.empty();
 
