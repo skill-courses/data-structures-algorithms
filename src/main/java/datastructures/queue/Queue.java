@@ -7,6 +7,7 @@ public class Queue<T> {
     private final int capacity; // 队列容量
     private int elementsSize;
 
+    @SuppressWarnings("unchecked")
     public Queue(int capacity) {
         this.capacity = capacity;
         this.arr = (T[]) new Object[this.capacity];
