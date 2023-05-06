@@ -44,4 +44,8 @@ public class ArrayStack<T> {
         top--;
         return element;
     }
+
+    public T peek() {
+        return arr[top];
+    }
 }

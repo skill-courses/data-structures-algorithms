@@ -95,4 +95,14 @@ class ArrayStackTest {
         arrayStack.pop();
         assertEquals(1, arrayStack.size());
     }
+
+    @Test
+    void should_peek_top_element() {
+        ArrayStack<Integer> arrayStack = new ArrayStack<>(5);
+        arrayStack.push(1);
+        arrayStack.push(2);
+        arrayStack.push(3);
+        assertEquals(3, arrayStack.peek());
+        assertEquals(3, arrayStack.size());
+    }
 }

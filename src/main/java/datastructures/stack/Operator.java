@@ -3,7 +3,7 @@ package datastructures.stack;
 import java.util.Arrays;
 
 public enum Operator {
-    ADD("+", 0, (num1, num2) -> num1 + num2),
+    ADD("+", 0, Integer::sum),
     SUBTRACT("-", 0, (num1, num2) -> num1 - num2),
     MULTIPLY("*", 1, (num1, num2) -> num1 * num2),
     DIVIDE("/", 1, (num1, num2) -> num1 / num2);
@@ -18,11 +18,10 @@ public enum Operator {
         this.operation = operation;
     }
 
-    public int getPriority() {
-        return priority;
-    }
-
-    public double calculate(int num1, int num2) {
+    public int calculate(int num1, int num2) {
+        if (this == DIVIDE || this == SUBTRACT) {
+            return operation.cal(num2, num1);
+        }
         return operation.cal(num1, num2);
     }
 
@@ -35,5 +34,9 @@ public enum Operator {
 
     public static boolean isOperator(String symbol) {
         return Arrays.stream(Operator.values()).anyMatch(operator -> operator.symbol.equals(symbol));
+    }
+
+    public static boolean comparePriority(String symbol1, String symbol2) {
+        return fromSymbol(symbol1).priority <= fromSymbol(symbol2).priority;
     }
 }

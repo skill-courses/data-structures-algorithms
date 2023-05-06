@@ -36,9 +36,9 @@ class OperatorTest {
     @Test
     void should_calculate_two_number() {
         assertEquals(2, Operator.ADD.calculate(1, 1));
-        assertEquals(1, Operator.SUBTRACT.calculate(2, 1));
+        assertEquals(1, Operator.SUBTRACT.calculate(1, 2));
         assertEquals(6, Operator.MULTIPLY.calculate(2, 3));
-        assertEquals(2, Operator.DIVIDE.calculate(4, 2));
+        assertEquals(2, Operator.DIVIDE.calculate(2, 4));
     }
 
 }
