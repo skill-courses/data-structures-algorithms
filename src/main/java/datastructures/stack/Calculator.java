@@ -5,9 +5,9 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Calculator {
-    private static final Pattern NUMBER_OPERATION_MATCH = Pattern.compile("(?<=\\d)(?=\\D)|(?<=\\D)(?=\\d)");
+    private static final Pattern NUMBER_OPERATION_MATCH = Pattern.compile("(?<=\\d)(?=\\D)|(?<=\\D)(?=\\d)|(?=\\()|(?<=\\))(?=\\D)");
     private final ArrayStack<Integer> numberStack;
-    private final ArrayStack<String> operationStack;
+    private final ArrayStack<Operator> operationStack;
 
     public Calculator(int length) {
         this.numberStack = new ArrayStack<>(length);
@@ -26,10 +26,11 @@ public class Calculator {
     private void parseToStack(String expression) {
         parseExpression(expression).forEach((String item) -> {
             if (Operator.isOperator(item)) {
-                if (!operationStack.isEmpty() && Operator.comparePriority (item, operationStack.peek())) {
+                Operator operator = Operator.fromSymbol(item);
+                if (!operationStack.isEmpty() && operator.lessThanPriority(operationStack.peek())) {
                     calTwoNumbers();
                 }
-                operationStack.push(item);
+                operationStack.push(operator);
             } else {
                 numberStack.push(Integer.valueOf(item));
             }
@@ -39,12 +40,11 @@ public class Calculator {
     private void calTwoNumbers() {
         int num1 = numberStack.pop();
         int num2 = numberStack.pop();
-        Operator operator = Operator.fromSymbol(operationStack.pop());
-        int result = operator.calculate(num1, num2);
+        int result = operationStack.pop().calculate(num1, num2);
         numberStack.push(result);
     }
 
-    private static List<String> parseExpression(String expression) {
+    public static List<String> parseExpression(String expression) {
         return NUMBER_OPERATION_MATCH.splitAsStream(expression).collect(Collectors.toList());
     }
 }

@@ -41,4 +41,20 @@ class OperatorTest {
         assertEquals(2, Operator.DIVIDE.calculate(2, 4));
     }
 
+    @Test
+    void should_throw_exception_when_calculate_parameter_has_bracket() {
+        assertThrows(RuntimeException.class, () -> Operator.LEFT_BRACKET.calculate(1, 2));
+        assertThrows(RuntimeException.class, () -> Operator.RIGHT_BRACKET.calculate(1, 2));
+    }
+
+        @Test
+    void should_compare_symbol_priority() {
+        assertTrue(Operator.ADD.lessThanPriority(Operator.SUBTRACT));
+        assertTrue(Operator.ADD.lessThanPriority(Operator.MULTIPLY));
+        assertTrue(Operator.MULTIPLY.lessThanPriority(Operator.DIVIDE));
+        assertTrue(Operator.LEFT_BRACKET.lessThanPriority(Operator.ADD));
+        assertTrue(Operator.LEFT_BRACKET.lessThanPriority(Operator.RIGHT_BRACKET));
+        assertFalse(Operator.MULTIPLY.lessThanPriority(Operator.ADD));
+    }
+
 }

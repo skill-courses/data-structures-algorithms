@@ -35,4 +35,26 @@ class CalcstraTest {
         assertEquals(76, result);
     }
 
+    @Test
+    void should_can_parse_simple_infix_express_to_postfix_expression() {
+        final List<String> result = Calcstra.infixToPostfix("2+3");
+        assertEquals(List.of("2", "3", "+"), result);
+    }
+
+    @Test
+    void should_can_parse_complex_infix_express_to_postfix_expression() {
+        final List<String> postfixExpression = Calcstra.infixToPostfix("4*5-8+60+8/2");
+
+        List<String> expression = List.of("4", "5", "*", "8", "-", "60", "+", "8", "2", "/", "+");
+        assertEquals(expression, postfixExpression);
+    }
+
+    @Test
+    void should_can_parse_complex_with_brackets_infix_express_to_postfix_expression() {
+        final List<String> postfixExpression = Calcstra.infixToPostfix("2*((1+2)/6+3)-5");
+
+        List<String> expression = List.of("2", "1", "2", "+", "6", "/", "3", "+", "*", "5", "-");
+        assertEquals(expression, postfixExpression);
+    }
+
 }
