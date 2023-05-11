@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 public class Calculator {
     private static final Pattern NUMBER_OPERATION_MATCH = Pattern.compile("(?<=\\d)(?=\\D)|(?<=\\D)(?=\\d)|(?=\\()|(?<=\\))(?=\\D)");
-    private final ArrayStack<Integer> numberStack;
+    protected final ArrayStack<Integer> numberStack;
     private final ArrayStack<Operator> operationStack;
 
     public Calculator(int length) {
@@ -18,7 +18,7 @@ public class Calculator {
         parseToStack(expression);
 
         while (!operationStack.isEmpty()) {
-            calTwoNumbers();
+            calTwoNumbers(operationStack.pop());
         }
         return numberStack.pop();
     }
@@ -28,7 +28,7 @@ public class Calculator {
             if (Operator.isOperator(item)) {
                 Operator operator = Operator.fromSymbol(item);
                 if (!operationStack.isEmpty() && operator.lessThanPriority(operationStack.peek())) {
-                    calTwoNumbers();
+                    calTwoNumbers(operationStack.pop());
                 }
                 operationStack.push(operator);
             } else {
@@ -37,10 +37,10 @@ public class Calculator {
         });
     }
 
-    private void calTwoNumbers() {
+    protected void calTwoNumbers(Operator operator) {
         int num1 = numberStack.pop();
         int num2 = numberStack.pop();
-        int result = operationStack.pop().calculate(num1, num2);
+        int result = operator.calculate(num1, num2);
         numberStack.push(result);
     }
 

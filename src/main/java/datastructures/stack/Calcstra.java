@@ -3,29 +3,25 @@ package datastructures.stack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Calcstra {
-
-    private final ArrayStack<Integer> numbers;
+public class Calcstra extends Calculator {
 
     public Calcstra(int size) {
-        numbers = new ArrayStack<>(size);
+        super(size);
     }
 
-    public int cal(List<String> expression) {
+    @Override
+    public int cal(String expression) {
         parseToNumbers(expression);
 
-        return numbers.pop();
+        return this.numberStack.pop();
     }
 
-    private void parseToNumbers(List<String> expression) {
-        expression.forEach((String item) -> {
+    private void parseToNumbers(String expression) {
+        infixToPostfix(expression).forEach((String item) -> {
             if (Operator.isOperator(item)) {
-                int num1 = numbers.pop();
-                int num2 = numbers.pop();
-                int result = Operator.fromSymbol(item).calculate(num1, num2);
-                numbers.push(result);
+                this.calTwoNumbers(Operator.fromSymbol(item));
             } else {
-                numbers.push(Integer.valueOf(item));
+                this.numberStack.push(Integer.valueOf(item));
             }
         });
     }

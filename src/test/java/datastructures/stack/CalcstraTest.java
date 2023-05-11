@@ -10,28 +10,22 @@ class CalcstraTest {
 
     @Test
     void should_cal_simple_expression() {
-        final List<String> expression = List.of("1", "1", "+");
-
-        Calcstra calcstra = new Calcstra(expression.size());
-        int result = calcstra.cal(expression);
+        Calcstra calcstra = new Calcstra(3);
+        int result = calcstra.cal("1+1");
         assertEquals(2, result);
     }
 
     @Test
     void should_cal_normal_expression() {
-        final List<String> expression = List.of("3", "4", "+", "5", "*", "6", "-");
-
-        Calcstra calcstra = new Calcstra(expression.size());
-        int result = calcstra.cal(expression);
+        Calcstra calcstra = new Calcstra(7);
+        int result = calcstra.cal("(3+4)*5-6");
         assertEquals(29, result);
     }
 
     @Test
     void should_cal_complex_expression() {
-        final List<String> expression = List.of("4", "5", "*", "8", "-", "60", "+", "8", "2", "/", "+");
-
-        Calcstra calcstra = new Calcstra(expression.size());
-        int result = calcstra.cal(expression);
+        Calcstra calcstra = new Calcstra(11);
+        int result = calcstra.cal("4*5-8+60+8/2");
         assertEquals(76, result);
     }
 
@@ -55,6 +49,13 @@ class CalcstraTest {
 
         List<String> expression = List.of("2", "1", "2", "+", "6", "/", "3", "+", "*", "5", "-");
         assertEquals(expression, postfixExpression);
+    }
+
+    @Test
+    void should_can_cal_complex_with_brackets_expression() {
+        Calcstra calcstra = new Calcstra(15);
+        int result = calcstra.cal("2*((1+2)/6+3)-5");
+        assertEquals(1, result);
     }
 
 }

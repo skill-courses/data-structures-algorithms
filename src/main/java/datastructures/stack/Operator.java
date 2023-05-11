@@ -43,9 +43,4 @@ public enum Operator {
     public boolean lessThanPriority(Operator operator) {
         return this.priority <= operator.priority;
     }
-
-
-    public boolean equals(String symbol) {
-        return this.symbol.equals(symbol);
-    }
 }
