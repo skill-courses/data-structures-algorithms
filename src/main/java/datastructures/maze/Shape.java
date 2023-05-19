@@ -1,5 +1,8 @@
 package datastructures.maze;
 
 public enum Shape {
-    POINT, WALL;
+    POINT,
+    HORIZONTAL_WALL,
+    VERTICAL_WALL,
+    REACHABLE
 }

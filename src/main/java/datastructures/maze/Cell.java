@@ -1,10 +1,9 @@
 package datastructures.maze;
 
-import java.util.Objects;
 
 public class Cell {
-    private int rowIndex = 0;
-    private int columnIndex = 0;
+    private final int rowIndex;
+    private final int columnIndex;
     private Shape shape;
 
     public Cell(int rowIndex, int columnIndex) {
@@ -13,26 +12,12 @@ public class Cell {
         this.shape = Shape.POINT;
     }
 
-    public static Cell ofWall(int rowIndex, int columnIndex) {
-        final Cell cell = new Cell(rowIndex, columnIndex);
-        cell.setShape(Shape.WALL);
-        return cell;
-    }
-
     public int getRowIndex() {
         return rowIndex;
     }
 
-    public void setRowIndex(int rowIndex) {
-        this.rowIndex = rowIndex;
-    }
-
     public int getColumnIndex() {
         return columnIndex;
-    }
-
-    public void setColumnIndex(int columnIndex) {
-        this.columnIndex = columnIndex;
     }
 
     public Shape getShape() {
@@ -41,5 +26,33 @@ public class Cell {
 
     public void setShape(Shape shape) {
         this.shape = shape;
+    }
+
+    public boolean sameLocation(Cell cell) {
+        return this.rowIndex == cell.getRowIndex() && this.columnIndex == cell.getColumnIndex();
+    }
+
+    public boolean isDownCell(Cell cell) {
+        return (this.rowIndex == cell.getRowIndex() + 1) && (this.columnIndex == cell.getColumnIndex());
+    }
+
+    public boolean isRightCell(Cell cell) {
+        return (this.rowIndex == cell.getRowIndex()) && (this.columnIndex == cell.getColumnIndex() + 1);
+    }
+
+    public boolean isUpCell(Cell cell) {
+        return (this.rowIndex == cell.getRowIndex() - 1) && (this.columnIndex == cell.getColumnIndex());
+    }
+
+    public boolean isLeftCell(Cell cell) {
+        return (this.rowIndex == cell.getRowIndex()) && (this.columnIndex == cell.getColumnIndex() - 1);
+    }
+
+    public boolean reachable() {
+        return this.getShape() == Shape.POINT;
+    }
+
+    public boolean isPath() {
+        return this.getShape() == Shape.REACHABLE;
     }
 }
