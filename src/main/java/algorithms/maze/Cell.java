@@ -1,4 +1,4 @@
-package datastructures.maze;
+package algorithms.maze;
 
 
 public class Cell {
