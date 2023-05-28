@@ -50,4 +50,22 @@ class SortTest {
         int[] except = {-2, -1, 3, 8, 9};
         assertArrayEquals(except, sortArr);
     }
+
+    @Test
+    void should_void_sort_by_merge() {
+        int[] arr = {-1, -2, 3, 9, 8};
+
+        int[] sortArr = Sort.mergeSort(arr);
+        int[] except = {-2, -1, 3, 8, 9};
+        assertArrayEquals(except, sortArr);
+    }
+
+    @Test
+    void should_void_sort_by_bucket() {
+        int[] arr = {68, 45, 0, 1, 893, 4, 28};
+
+        int[] sortArr = Sort.bucketSort(arr);
+        int[] except = {0, 1, 4, 28, 45, 68, 893};
+        assertArrayEquals(except, sortArr);
+    }
 }

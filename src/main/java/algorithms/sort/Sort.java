@@ -1,5 +1,12 @@
 package algorithms.sort;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 public final class Sort {
 
     private Sort() {
@@ -70,17 +77,21 @@ public final class Sort {
         final int STEP = 2;
         for (int gap = arr.length / STEP; gap > 0; gap /= STEP) {
             for (int i = gap; i < arr.length; i++) {
-                for (int j = i - gap; j >= 0; j -= gap) {
-                    int temp = 0;
-                    if (arr[j] > arr[j + gap]) {
-                        temp = arr[j + gap];
-                        arr[j + gap] = arr[j];
-                        arr[j] = temp;
-                    }
-                }
+                swapShell(arr, gap, i);
             }
         }
         return arr;
+    }
+
+    private static void swapShell(int[] arr, int gap, int i) {
+        for (int j = i - gap; j >= 0; j -= gap) {
+            int temp;
+            if (arr[j] > arr[j + gap]) {
+                temp = arr[j + gap];
+                arr[j + gap] = arr[j];
+                arr[j] = temp;
+            }
+        }
     }
 
     public static int[] quickSort(int[] arr, int low, int high) {
@@ -113,5 +124,70 @@ public final class Sort {
         int temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
+    }
+
+    public static int[] mergeSort(int[] arr) {
+        if (arr.length <= 1) {
+            return arr;
+        }
+
+        final int MID_INDEX = 2;
+        int mid = arr.length / MID_INDEX;
+        int[] left = Arrays.copyOfRange(arr, 0, mid);
+        int[] right = Arrays.copyOfRange(arr, mid, arr.length);
+
+        mergeSort(left);
+        mergeSort(right);
+        return merge(arr, left, right);
+    }
+
+    private static int[] merge(int[] arr, int[] left, int[] right) {
+        int index = 0;
+        int leftIndex = 0;
+        int rightIndex = 0;
+
+        while (leftIndex < left.length && rightIndex < right.length) {
+            arr[index++] = left[leftIndex] <= right[rightIndex] ? left[leftIndex++] : right[rightIndex++];
+        }
+
+        while (leftIndex < left.length) {
+            arr[index++] = left[leftIndex++];
+        }
+
+        while (rightIndex < right.length) {
+            arr[index++] = right[rightIndex++];
+        }
+
+        return arr;
+    }
+
+    public static int[] bucketSort(final int[] arr) {
+        final int DECIMAL = 10;
+        final List<ArrayList<Integer>> buckets =
+                IntStream.range(0, DECIMAL).mapToObj(ArrayList<Integer>::new).collect(Collectors.toList());
+        int max = Arrays.stream(arr).max().getAsInt();
+        final int size = (max + "").length();
+
+        for (int i = 0, n = 1; i < size; i++, n *= DECIMAL) {
+            for (int k : arr) {
+                int digitOfElement = k / n % DECIMAL;
+                buckets.get(digitOfElement).add(k);
+            }
+
+            mergeBuckets(arr, buckets);
+        }
+
+        return arr;
+    }
+
+    private static void mergeBuckets(int[] arr, List<ArrayList<Integer>> buckets) {
+        int index = 0;
+        for (List<Integer> bucket : buckets) {
+            Collections.sort(bucket);
+            for (int num : bucket) {
+                arr[index++] = num;
+            }
+            bucket.clear();
+        }
     }
 }
