@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class BinaryTree {
-    private final TreeNode root;
+    private TreeNode root;
 
     public BinaryTree(TreeNode root) {
         this.root = root;
@@ -39,5 +39,14 @@ public class BinaryTree {
 
     public Optional<TreeNode> findByPostSearch(int no) {
         return this.root.postSearch(no);
+    }
+
+    public void deleteNodeWithSub(int no) {
+        if(this.root.getId() == no) {
+            this.root = null;
+            return;
+        }
+
+        this.root.deleteNodeTree(no);
     }
 }

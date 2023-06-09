@@ -1,6 +1,6 @@
 package datastructures.tree;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -13,8 +13,8 @@ class BinaryTreeTest {
 
     private static BinaryTree binaryTree;
 
-    @BeforeAll
-    static void init() {
+    @BeforeEach
+    void init() {
         TreeNode root = new TreeNode(1, "宋江");
         TreeNode root1 = new TreeNode(2, "卢俊义");
         TreeNode root2 = new TreeNode(3, "吴用");
@@ -78,5 +78,27 @@ class BinaryTreeTest {
         assertTrue(nodeOptional.isPresent());
         assertEquals("吴用", nodeOptional.get().getName());
         assertFalse(nodeNULL.isPresent());
+    }
+
+    @Test
+    void should_delete_node_with_sub_nodes() {
+        binaryTree.deleteNodeWithSub(3);
+
+        List<TreeNode> nodeByPreOrder = binaryTree.getNodesByPreOrder();
+
+        List<Integer> ids = nodeByPreOrder.stream().map(TreeNode::getId).collect(Collectors.toList());
+        assertEquals(List.of(1, 2), ids);
+    }
+
+    @Test
+    void should_delete_leaf_node() {
+        binaryTree.deleteNodeWithSub(2);
+
+        List<Integer> ids = binaryTree.getNodesByPreOrder().stream().map(TreeNode::getId).collect(Collectors.toList());
+        assertEquals(List.of(1, 3, 4), ids);
+
+        binaryTree.deleteNodeWithSub(4);
+        List<Integer> newIds = binaryTree.getNodesByPreOrder().stream().map(TreeNode::getId).collect(Collectors.toList());
+        assertEquals(List.of(1, 3), newIds);
     }
 }

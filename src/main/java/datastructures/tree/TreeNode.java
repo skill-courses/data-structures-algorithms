@@ -88,4 +88,22 @@ public class TreeNode {
                     return Optional.empty();
                 });
     }
+
+    public void deleteNodeTree(int no) {
+        this.left.ifPresent(leftNode -> {
+            if (leftNode.getId() == no) {
+                this.left = Optional.empty();
+            } else {
+                this.left.get().deleteNodeTree(no);
+            }
+        });
+
+        this.right.ifPresent(rightNode -> {
+            if (rightNode.getId() == no) {
+                this.right = Optional.empty();
+            } else {
+                this.right.get().deleteNodeTree(no);
+            }
+        });
+    }
 }
