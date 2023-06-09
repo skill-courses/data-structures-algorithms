@@ -55,4 +55,37 @@ public class TreeNode {
         this.getRight().ifPresent(node -> node.postOrder(nodes));
         nodes.add(this);
     }
+
+    public Optional<TreeNode> preSearch(int no) {
+        if (this.id == no) {
+            return Optional.of(this);
+        }
+
+        return left.flatMap(node -> node.preSearch(no))
+                .or(() -> right.flatMap(node -> node.preSearch(no)));
+    }
+
+    public Optional<TreeNode> inSearch(int no) {
+        Optional<TreeNode> result = left.flatMap(node -> node.inSearch(no));
+        if (result.isPresent()) {
+            return result;
+        }
+
+        if (this.id == no) {
+            return Optional.of(this);
+        }
+
+        return right.flatMap(node -> node.inSearch(no));
+    }
+
+    public Optional<TreeNode> postSearch(int no) {
+        return left.flatMap(node -> node.preSearch(no))
+                .or(() -> right.flatMap(node -> node.preSearch(no)))
+                .or(() -> {
+                    if (this.id == no) {
+                        return Optional.of(this);
+                    }
+                    return Optional.empty();
+                });
+    }
 }
