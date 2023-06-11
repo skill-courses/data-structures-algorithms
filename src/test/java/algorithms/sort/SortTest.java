@@ -68,4 +68,13 @@ class SortTest {
         int[] except = {0, 1, 4, 28, 45, 68, 893};
         assertArrayEquals(except, sortArr);
     }
+
+    @Test
+    void should_sort_by_heap() {
+        int[] arr = {68, 45, 0, 1, -89, 4, 28};
+
+        int[] sortArr = Sort.heapSort(arr);
+        int[] except = {-89, 0, 1, 4, 28, 45, 68};
+        assertArrayEquals(except, sortArr);
+    }
 }

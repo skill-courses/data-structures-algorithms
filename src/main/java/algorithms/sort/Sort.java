@@ -190,4 +190,47 @@ public final class Sort {
             bucket.clear();
         }
     }
+
+    public static int[] heapSort(int[] arr) {
+        int n = arr.length;
+
+        // 构建最大堆（Max Heap）
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            siftDown(arr, n, i);
+        }
+
+        // 逐步将堆顶元素（最大值）交换到数组末尾，并重新调整堆
+        for (int i = n - 1; i > 0; i--) {
+            // 将堆顶元素与当前未排序部分的最后一个元素交换
+            int temp = arr[0];
+            arr[0] = arr[i];
+            arr[i] = temp;
+
+            // 重新调整堆
+            siftDown(arr, i, 0);
+        }
+        return arr;
+    }
+
+    private static void siftDown(int[] array, int size, int index) {
+        int largest = index;
+        int leftChild = 2 * index + 1;
+        int rightChild = 2 * index + 2;
+
+        // 找出当前节点、左子节点和右子节点中的最大值
+        if (leftChild < size && array[leftChild] > array[largest]) {
+            largest = leftChild;
+        }
+        if (rightChild < size && array[rightChild] > array[largest]) {
+            largest = rightChild;
+        }
+
+        // 如果最大值不是当前节点，则交换它们，并继续向下调整堆
+        if (largest != index) {
+            int temp = array[index];
+            array[index] = array[largest];
+            array[largest] = temp;
+            siftDown(array, size, largest);
+        }
+    }
 }
