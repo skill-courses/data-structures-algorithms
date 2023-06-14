@@ -1,10 +1,8 @@
 package datastructures.tree.huffma;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 public class HuffmanTree {
 
@@ -16,24 +14,47 @@ public class HuffmanTree {
             nodes.push(huffmanNode);
         });
 
-        buildHuffmaTree();
+        buildHuffmaTree((leftNode, rightNode) -> new HuffmanNode( leftNode.getWeights() + rightNode.getWeights()));
     }
 
-    private void buildHuffmaTree() {
+    public HuffmanTree(Byte[] bytes) {
+        Arrays.stream(bytes).collect(Collectors.toMap(b -> b, b -> 1, Integer::sum)).forEach((key, value) -> {
+            HuffmanNode huffmanNode = new HuffmanNode(Optional.of(key), value);
+            nodes.push(huffmanNode);
+        });
+
+        buildHuffmaTree((leftNode, rightNode) -> new HuffmanNode(Optional.empty(), leftNode.getWeights() + rightNode.getWeights()));
+    }
+
+    private void buildHuffmaTree(BiFunction<HuffmanNode, HuffmanNode, HuffmanNode> buildHuffmanNode) {
         while (nodes.size() > 1) {
             Collections.sort(nodes);
             final var leftNode = this.nodes.pop();
             final var rightNode = this.nodes.pop();
-            HuffmanNode parent = new HuffmanNode(leftNode.getWeights() + rightNode.getWeights());
+            HuffmanNode parent = buildHuffmanNode.apply(leftNode, rightNode);
             parent.setLeft(leftNode);
             parent.setRight(rightNode);
             this.nodes.push(parent);
         }
     }
 
+
     public List<Integer> preOrderWeight() {
-        List<Integer> weights = new ArrayList<>();
+        List<HuffmanNode> weights = new ArrayList<>();
+        nodes.pop().preOrder(weights);
+        return weights.stream().map(HuffmanNode::getWeights).collect(Collectors.toList());
+    }
+
+    public List<HuffmanNode> preOrder() {
+        List<HuffmanNode> weights = new ArrayList<>();
         nodes.pop().preOrder(weights);
         return weights;
+    }
+
+    public Map<Byte, String> buildHuffmaCodes() {
+        Map<Byte, String> huffmanCodes = new HashMap<>();
+        StringBuilder builder = new StringBuilder();
+        nodes.pop().getCodes(huffmanCodes, "", builder);
+        return huffmanCodes;
     }
 }
