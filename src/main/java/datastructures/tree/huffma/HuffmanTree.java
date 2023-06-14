@@ -1,4 +1,4 @@
-package datastructures.tree;
+package datastructures.tree.huffma;
 
 import java.util.ArrayList;
 import java.util.Arrays;

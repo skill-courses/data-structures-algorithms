@@ -4,6 +4,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import datastructures.tree.huffma.HuffmanTree;
 import org.junit.jupiter.api.Test;
 
 class HuffmanTreeTest {
