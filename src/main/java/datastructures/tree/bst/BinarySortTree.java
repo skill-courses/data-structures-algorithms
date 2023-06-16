@@ -3,6 +3,7 @@ package datastructures.tree.bst;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class BinarySortTree {
     private final BinarySortNode root;
@@ -20,5 +21,10 @@ public class BinarySortTree {
         List<BinarySortNode> nodes = new ArrayList<>();
         root.infixOrder(nodes);
         return nodes;
+    }
+
+    public void delete(int value) {
+        Optional<BinarySortNode> nodeOptional = root.findParent(value);
+        nodeOptional.ifPresent(node -> node.deleteSubNode(value));
     }
 }
