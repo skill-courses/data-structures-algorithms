@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class BinarySortNode {
-    private final int value;
+    private int value;
     private Optional<BinarySortNode> left = Optional.empty();
     private Optional<BinarySortNode> right = Optional.empty();
 
@@ -16,12 +16,24 @@ public class BinarySortNode {
         return value;
     }
 
+    public void setValue(int value) {
+        this.value = value;
+    }
+
     public Optional<BinarySortNode> getLeft() {
         return left;
     }
 
     public Optional<BinarySortNode> getRight() {
         return right;
+    }
+
+    public void setLeft(Optional<BinarySortNode> left) {
+        this.left = left;
+    }
+
+    public void setRight(Optional<BinarySortNode> right) {
+        this.right = right;
     }
 
     public void add(BinarySortNode binarySortNode) {
@@ -80,7 +92,6 @@ public class BinarySortNode {
                         () -> this.right = getReplacedNode(this.right.orElseThrow()));
     }
 
-
     private boolean isOnlyRightNode() {
         return this.left.isEmpty() && this.right.isPresent();
     }
@@ -99,5 +110,36 @@ public class BinarySortNode {
 
     public BinarySortNode getMaxNode() {
         return this.right.map(BinarySortNode::getMaxNode).orElse(this);
+    }
+
+    public int height() {
+        return Math.max(left.map(BinarySortNode::height).orElse(0), right.map(BinarySortNode::height).orElse(0)) + 1;
+    }
+
+    public int getLeftHeight() {
+        return getLeft().map(BinarySortNode::height).orElse(0);
+    }
+
+    public int getRightHeight() {
+        return getRight().map(BinarySortNode::height).orElse(0);
+    }
+
+    public void leftRotate() {
+        BinarySortNode node  = new BinarySortNode(value);
+        node.setLeft(left);
+        node.setRight(right.map(BinarySortNode::getLeft).orElse(Optional.empty()));
+        setValue(right.map(BinarySortNode::getValue).orElse(-1));
+        setRight(right.map(BinarySortNode::getRight).orElse(Optional.empty()));
+        setLeft(Optional.of(node));
+    }
+
+
+    public void rightRotate() {
+        BinarySortNode node  = new BinarySortNode(value);
+        node.setRight(right);
+        node.setLeft(left.map(BinarySortNode::getRight).orElse(Optional.empty()));
+        setValue(left.map(BinarySortNode::getValue).orElse(-1));
+        setLeft(left.map(BinarySortNode::getLeft).orElse(Optional.empty()));
+        setRight(Optional.of(node));
     }
 }
