@@ -27,4 +27,12 @@ public class BinarySortTree {
         Optional<BinarySortNode> nodeOptional = root.findParent(value);
         nodeOptional.ifPresent(node -> node.deleteSubNode(value));
     }
+
+    public int findMinValue() {
+        return root.getMinNode().getValue();
+    }
+
+    public int findMaxValue() {
+        return root.getMaxNode().getValue();
+    }
 }

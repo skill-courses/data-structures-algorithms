@@ -41,12 +41,12 @@ public class BinarySortNode {
     }
 
     public Optional<BinarySortNode> findParent(int value) {
-        return left.flatMap(node -> {
+        return left.flatMap((BinarySortNode node) -> {
             if (node.value == value) {
                 return Optional.of(this);
             }
             return node.findParent(value);
-        }).or(() -> right.flatMap(node -> {
+        }).or(() -> right.flatMap((BinarySortNode node) -> {
             if (node.value == value) {
                 return Optional.of(this);
             }
@@ -54,25 +54,50 @@ public class BinarySortNode {
         }));
     }
 
-    public void deleteSubNode(int value) {
-        this.left.ifPresent(leftNode -> {
-            if (leftNode.isTargetLeafNode(value)) {
-                this.left = Optional.empty();
-            }
-        });
+    private static Optional<BinarySortNode> getReplacedNode(BinarySortNode node) {
+        if (node.isLeafNode()) {
+            return Optional.empty();
+        }
 
-        this.right.ifPresent(rightNode -> {
-            if (rightNode.isTargetLeafNode(value)) {
-                this.right = Optional.empty();
-            }
-        });
+        if (node.isOnlyRightNode()) {
+            return node.getRight();
+        }
+
+        if (node.isOnlyLeftNode()) {
+            return node.getLeft();
+        }
+
+        final var lefMax = node.getLeft().orElseThrow().getMaxNode();
+        node.findParent(lefMax.value).ifPresent(item -> item.deleteSubNode(lefMax.value));
+        lefMax.right = node.right;
+        lefMax.left = node.left;
+        return Optional.of(lefMax);
     }
 
-    private boolean isTargetLeafNode(int value) {
-        return this.value == value && this.isLeafNode();
+    public void deleteSubNode(int value) {
+        this.left.stream().filter(node -> node.value == value).findFirst()
+                .ifPresentOrElse(leftNode -> this.left = getReplacedNode(leftNode),
+                        () -> this.right = getReplacedNode(this.right.orElseThrow()));
+    }
+
+
+    private boolean isOnlyRightNode() {
+        return this.left.isEmpty() && this.right.isPresent();
+    }
+
+    private boolean isOnlyLeftNode() {
+        return this.left.isPresent() && this.right.isEmpty();
     }
 
     private boolean isLeafNode() {
         return this.left.isEmpty() && this.right.isEmpty();
+    }
+
+    public BinarySortNode getMinNode() {
+        return this.left.map(BinarySortNode::getMinNode).orElse(this);
+    }
+
+    public BinarySortNode getMaxNode() {
+        return this.right.map(BinarySortNode::getMaxNode).orElse(this);
     }
 }
