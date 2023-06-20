@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -35,7 +37,7 @@ public class Graph {
                 .collect(Collectors.toSet());
     }
 
-    public List<Set<Route>> getPaths(String start, String end) {
+    public List<Set<Route>> getPathsByDFS(String start, String end) {
         List<Set<Route>> paths = new ArrayList<>();
         Set<Route> currentPath = new HashSet<>();
         dfs(start, end, currentPath, paths);
@@ -57,8 +59,36 @@ public class Graph {
         });
     }
 
+    public List<Set<Route>> getPathByBFS(String start, String end) {
+        List<Set<Route>> paths = new ArrayList<>();
+        Queue<List<Route>> queue = new LinkedList<>();
+
+        getRoutesByVertex(start).forEach(route -> addPathToQueue(queue, route, Collections.emptyList()));
+
+        while (!queue.isEmpty()) {
+            List<Route> currentPath = queue.poll();
+            Route lastRoute = currentPath.get(currentPath.size() - 1);
+
+            if (lastRoute.getEnd().equals(end)) {
+                Set<Route> pathSet = new HashSet<>(currentPath);
+                paths.add(pathSet);
+            } else {
+                getRoutesByVertex(lastRoute.getEnd()).stream().filter(route -> !currentPath.contains(route))
+                        .forEach(route -> addPathToQueue(queue, route, currentPath));
+            }
+        }
+
+        return paths;
+    }
+
+    private static void addPathToQueue(Queue<List<Route>> queue, Route route, List<Route> currentPath) {
+        List<Route> newPath = new ArrayList<>(currentPath);
+        newPath.add(route);
+        queue.offer(newPath);
+    }
+
     public Set<Route> getMinWeightPaths(String start, String end) {
-        return getPaths(start, end).stream().min(Comparator.comparingInt(path -> path.stream()
+        return getPathsByDFS(start, end).stream().min(Comparator.comparingInt(path -> path.stream()
                 .mapToInt(Route::getWeight)
                 .sum())).orElse(Collections.emptySet());
     }

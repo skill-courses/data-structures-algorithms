@@ -61,7 +61,26 @@ class GraphTest {
         graph.addRoute("B", "C", 2);
 
         assertEquals(8, graph.getRouteSize());
-        List<Set<Route>> paths = graph.getPaths("A", "E");
+        List<Set<Route>> paths = graph.getPathsByDFS("A", "E");
+        assertEquals(5, paths.size());
+        final var expected = Set.of(new Route("A", "B"), new Route("B", "E"));
+        assertTrue(paths.contains(expected));
+    }
+
+    @Test
+    void should_find_routes_from_vertex_to_another_vertex_by_bfs() {
+        Graph graph = new Graph();
+        graph.addRoute("A", "B", 10);
+        graph.addRoute("B", "E", 13);
+        graph.addRoute("A", "C", 15);
+        graph.addRoute("C", "E", 5);
+        graph.addRoute("A", "D", 12);
+        graph.addRoute("D", "E", 20);
+        graph.addRoute("D", "C", 3);
+        graph.addRoute("B", "C", 2);
+
+        assertEquals(8, graph.getRouteSize());
+        List<Set<Route>> paths = graph.getPathByBFS("A", "E");
         assertEquals(5, paths.size());
         final var expected = Set.of(new Route("A", "B"), new Route("B", "E"));
         assertTrue(paths.contains(expected));
