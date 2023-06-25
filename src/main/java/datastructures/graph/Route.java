@@ -30,6 +30,10 @@ public class Route {
         return weight;
     }
 
+    public boolean contains(String vertex) {
+        return this.start.equals(vertex) || this.end.equals(vertex);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

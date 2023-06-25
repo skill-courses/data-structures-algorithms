@@ -9,13 +9,14 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Graph {
-    private final Set<Route> routes = new HashSet<>();
+    protected final Set<Route> routes = new HashSet<>();
+    protected Set<String> vertexes = new HashSet<>();
 
     public void addRoute(String start, String end, int weight) {
         Route route = new Route(start, end, weight);
+        vertexes.addAll(Set.of(start, end));
         addRoute(route);
     }
 
@@ -28,8 +29,7 @@ public class Graph {
     }
 
     public Set<String> getVertexes() {
-        return routes.stream().flatMap(route -> Stream.of(route.getStart(), route.getEnd()))
-                .collect(Collectors.toSet());
+        return vertexes;
     }
 
     public Set<Route> getRoutesByVertex(String vertex) {
