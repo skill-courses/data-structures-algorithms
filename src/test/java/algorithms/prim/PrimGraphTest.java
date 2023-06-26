@@ -45,7 +45,7 @@ class PrimGraphTest {
         graph.addRoute("D", "C", 3);
         graph.addRoute("E", "C", 5);
 
-        Set<Route> paths = graph.getShortestPaths();
+        Set<Route> paths = graph.getShortestPathsByKruskal();
         assertEquals(6, paths.size());
         int sum = paths.stream().mapToInt(Route::getWeight).sum();
         assertEquals(36, sum);

@@ -18,6 +18,10 @@ public class Route {
         this.end = end;
     }
 
+    public static Route of(String start, String end) {
+        return new Route(start, end);
+    }
+
     public String getStart() {
         return start;
     }

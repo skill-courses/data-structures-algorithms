@@ -2,7 +2,6 @@ package algorithms.prim;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import datastructures.graph.Graph;
 import datastructures.graph.Route;
@@ -38,29 +37,12 @@ public class PrimGraph extends Graph {
     }
 
     public Set<Route> getShortestPathsByKruskal() {
-        Set<Route> shortestPaths = new HashSet<>();
+        KruskalGraph graph = new KruskalGraph();
 
-        // 创建并初始化连通分量
-        Map<String, Set<String>> connectedComponents = getVertexes()
-                .stream().collect(Collectors.toMap(vertex -> vertex,
-                        vertex -> Set.of(vertex)));
+        this.routes.stream().sorted(Comparator.comparingInt(Route::getWeight)).map(route -> new Path(route.getStart(), route.getEnd(), route.getWeight()))
+                .forEach(graph::add);
 
-        this.routes.stream().sorted(Comparator.comparingInt(Route::getWeight)).forEach(route -> {
-            Set<String> componentStart = connectedComponents.get(route.getStart());
-            Set<String> componentEnd = connectedComponents.get(route.getEnd());
-
-            //判断加入的route可以构成一个环状路径
-            if (!componentStart.equals(componentEnd)) {
-                shortestPaths.add(route);
-
-                // 合并连通分量
-                Set<String> mergedComponent = Stream.concat(componentStart.stream(), componentEnd.stream()).collect(
-                        Collectors.toSet());
-                mergedComponent.forEach(vertex -> connectedComponents.put(vertex, mergedComponent));
-            }
-        });
-
-        return shortestPaths;
+        return graph.getPaths().stream().map(path -> new Route(path.getRight(), path.getLeft(), path.getWeight())).collect(Collectors.toSet());
     }
 
     private void addPath(Set<String> visited, Set<Route> shortestPaths, Route route) {
