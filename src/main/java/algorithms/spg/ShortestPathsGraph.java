@@ -1,14 +1,11 @@
-package algorithms.sssp;
+package algorithms.spg;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import algorithms.mst.Path;
 
-public class SingleSourceShortestPathsGraph {
+public class ShortestPathsGraph {
     private final Set<Path> paths = new HashSet<>();
     private final Set<String> vertexes = new HashSet<>();
 
@@ -26,6 +23,10 @@ public class SingleSourceShortestPathsGraph {
 
     public boolean hasPath(Path path) {
         return this.paths.stream().anyMatch(path::equals);
+    }
+
+    public Optional<Path> getPath(Path path) {
+        return this.paths.stream().filter(path::equals).findFirst();
     }
 
     public Set<String> getVertexes() {
@@ -60,5 +61,42 @@ public class SingleSourceShortestPathsGraph {
                         shortestDistances.put(neighbor, newShortestDistances);
                     }
                 });
+    }
+
+    public Map<String, Map<String, Integer>> getShortestDistance() {
+        Map<String, Map<String, Integer>> shortestPaths = initShortestPaths();
+
+        final int INFINITY = Integer.MAX_VALUE;
+        for (String first : vertexes) {
+            for (String second : vertexes) {
+                for (String third : vertexes) {
+                    int distance23 = shortestPaths.get(second).get(first);
+                    int distance13 = shortestPaths.get(first).get(third);
+                    // 排除无穷大的情况
+                    if (distance23 == INFINITY || distance13 == INFINITY) {
+                        continue;
+                    }
+
+                    // 计算最短路径
+                    int shortestDistance = distance23 + distance13;
+                    if (shortestDistance < shortestPaths.get(second).get(third)) {
+                        shortestPaths.get(second).put(third, shortestDistance);
+                    }
+                }
+            }
+        }
+
+        return shortestPaths;
+    }
+
+    private Map<String, Map<String, Integer>> initShortestPaths() {
+        return vertexes.stream().collect(Collectors.toMap(start -> start, start -> this.vertexes.stream()
+                .collect(Collectors.toMap(end -> end, end -> {
+                    if (end.equals(start)) {
+                        return 0;
+                    }
+                    Path temp = Path.of(start, end);
+                    return getPath(temp).map(Path::getWeight).orElse(Integer.MAX_VALUE);
+                }))));
     }
 }
