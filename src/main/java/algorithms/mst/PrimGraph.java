@@ -1,4 +1,4 @@
-package algorithms.prim;
+package algorithms.mst;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,7 +37,7 @@ public class PrimGraph extends Graph {
     }
 
     public Set<Route> getShortestPathsByKruskal() {
-        KruskalGraph graph = new KruskalGraph();
+        MininumCostSpanningTree graph = new MininumCostSpanningTree();
 
         this.routes.stream().sorted(Comparator.comparingInt(Route::getWeight)).map(route -> new Path(route.getStart(), route.getEnd(), route.getWeight()))
                 .forEach(graph::add);

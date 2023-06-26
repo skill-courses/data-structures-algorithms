@@ -1,4 +1,4 @@
-package algorithms.prim;
+package algorithms.mst;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class KruskalGraph {
+public class MininumCostSpanningTree {
     private Set<Path> paths = new HashSet<>();
     private Set<String> vertexes = new HashSet<>();
     private Map<String, Set<String>> connectedVertexes = new HashMap<>();

@@ -1,4 +1,4 @@
-package algorithms.prim;
+package algorithms.mst;
 
 import java.util.Set;
 

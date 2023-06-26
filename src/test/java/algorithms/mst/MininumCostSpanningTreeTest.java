@@ -1,4 +1,4 @@
-package algorithms.prim;
+package algorithms.mst;
 
 import java.util.Set;
 
@@ -6,11 +6,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class KruskalGraphTest {
+class MininumCostSpanningTreeTest {
 
     @Test
-    void should_add_path_for_kurskal_graph() {
-        KruskalGraph graph = new KruskalGraph();
+    void should_add_path_for_mst_graph() {
+        MininumCostSpanningTree graph = new MininumCostSpanningTree();
         graph.add(Path.of("A", "B"));
         graph.add(Path.of("A", "C"));
         graph.add(Path.of("D", "B"));
@@ -22,8 +22,8 @@ class KruskalGraphTest {
     }
 
     @Test
-    void should_not_add_duplicate_path_for_kurskal_graph() {
-        KruskalGraph graph = new KruskalGraph();
+    void should_not_add_duplicate_path_for_mst_graph() {
+        MininumCostSpanningTree graph = new MininumCostSpanningTree();
         graph.add(Path.of("A", "B"));
         graph.add(Path.of("A", "C"));
         graph.add(Path.of("C", "A"));
@@ -35,8 +35,8 @@ class KruskalGraphTest {
     }
 
     @Test
-    void should_not_add_circle_path_for_kurskal_graph() {
-        KruskalGraph graph = new KruskalGraph();
+    void should_not_add_circle_path_for_mst_graph() {
+        MininumCostSpanningTree graph = new MininumCostSpanningTree();
         graph.add(Path.of("A", "B"));
         graph.add(Path.of("A", "C"));
         graph.add(Path.of("C", "B"));
@@ -48,8 +48,8 @@ class KruskalGraphTest {
     }
 
     @Test
-    void should_not_add_circle_path_for_complex_kurskal_graph() {
-        KruskalGraph graph = new KruskalGraph();
+    void should_not_add_circle_path_for_complex_mst_graph() {
+        MininumCostSpanningTree graph = new MininumCostSpanningTree();
         graph.add(Path.of("A", "B"));
         graph.add(Path.of("B", "D"));
         graph.add(Path.of("C", "D"));

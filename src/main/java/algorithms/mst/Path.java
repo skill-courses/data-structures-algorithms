@@ -1,4 +1,4 @@
-package algorithms.prim;
+package algorithms.mst;
 
 import java.util.Objects;
 import java.util.Set;
@@ -31,28 +31,7 @@ public class Path {
         return weight;
     }
 
-    public void setWeight(int weight) {
-        this.weight = weight;
-    }
-
     public static Path of(String left, String right) {
         return new Path(left, right);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Path path = (Path) o;
-        return Set.of(right, left).equals(Set.of(path.right, path.left));
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(left, right);
     }
 }
