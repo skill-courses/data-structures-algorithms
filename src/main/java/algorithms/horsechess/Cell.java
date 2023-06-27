@@ -3,8 +3,8 @@ package algorithms.horsechess;
 import java.util.Objects;
 
 public class Cell {
-    private int row;
-    private int column;
+    private final int row;
+    private final int column;
     private boolean visited;
 
     public Cell(int row, int column) {
